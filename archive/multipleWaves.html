@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Made with Thimble</title>
+    <style>
+      body{
+        margin:0;
+        padding:0;
+        background:#fff;
+
+      }
+      svg {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      path {
+        stroke-width: 1px;
+        stroke-linecap: round;
+        fill: #fff;
+      }
+    </style>  </head>
+  <body >
+    <svg>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+    </svg>
+    <script>
+    // create an empty array
+let xs = [];
+
+// count up to 500
+for (var i = 0; i <= window.innerWidth; i++) {
+  // add 1-500 to the array
+  xs.push(i);
+}
+
+// set time to 0
+let t = 0;
+
+//      window.onmousemove = animate;
+
+// create a new function
+function animate() {
+  //        e = event || window.event;
+  // create a new variable, map over the array
+  // x being 1-500
+  let points = xs.map(x => {
+    let amplitude = 10;
+    //          let freq = e.clientY / 4;
+
+    // define y, the proportions of the values in this equation will determine the shape of the curve
+    let baseline = 10;
+
+    var y = baseline + amplitude * Math.sin((x + t) / 15);
+
+    // return coordinates
+    return [x, y];
+  });
+
+  // map over the points created in the last function
+  let path =
+    "M" +
+    points
+      .map(p => {
+        // store the x and y coordinates
+        return p[0] + "," + p[1];
+
+        // add a L to the next set of coords
+      })
+      .join(" L");
+
+  // get the path, set a new d
+  var paths = document.getElementsByClassName("path");
+
+  for (var k = 0; k < paths.length; k++) {
+    paths[k].setAttribute("d", path);
+  }
+
+  // add 0.5 to t
+  t += 0.25;
+
+  // tell the browser to expect a new animation frame
+  requestAnimationFrame(animate);
+}
+
+// start the animation
+animate();
+
+var paths = document.getElementsByClassName("path");
+
+for (var j = 0; j < paths.length; j++) {
+  paths[j].setAttribute(
+    "transform",
+    "translate(" + 0 + "," + j * (window.innerHeight / paths.length) + ")"
+  );
+}
+</script>
+  </body>
+</html>

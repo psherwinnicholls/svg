@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Made with Thimble</title>
+  <style>
+    body{
+      background: #000;
+    }
+  </style>
+  </head>
+  <body >
+    <svg>
+      <path class="path" d="M10,10 L50,100 L90,50"></path>
+    </svg>
+    <script>
+    // create an empty array
+let xs = [];
+
+// count up to the edge of the page
+for (var i = 0; i <= window.innerWidth; i++) {
+  // add each pixel to the array
+  xs.push(i);
+}
+
+// set time to 0
+let t = 0;
+
+//      window.onmousemove = animate;
+
+// create a new function
+//      function animate(e) {
+function animate() {
+  // e = event || window.event;
+  // create a new variable, map over the array
+  // x being 1-500
+  let points = xs.map(x => {
+    // let ampitude = e.clientX / 2;
+    let ampitude = 90;
+    // how many waves
+    let freq = 45;
+    // where should 0 sit?
+    let baseline = window.innerHeight / 2;
+
+    // define y, the proportions of the values in this equation will determine the shape of the curve
+    var y = baseline + ampitude * Math.cos((x + t) / freq);
+
+    // return coordinates
+    return [x, y];
+  });
+
+  // map over the points created in the last function
+  let path =
+    "M" +
+    points
+      .map(p => {
+        // store the x and y coordinates
+        return p[0] + "," + p[1];
+
+        // add a L to the next set of coords
+      })
+      .join(" L");
+
+  // get the path
+  var paths = document.getElementsByClassName("path");
+
+  // for all of the paths
+  for (var j = 0; j < paths.length; j++) {
+    // set a new d
+    paths[j].setAttribute("d", path);
+  }
+
+  // add time to t
+  t += 0.25;
+
+  // tell the browser to expect a new animation frame
+  requestAnimationFrame(animate);
+}
+// start the animation
+animate();
+</script>
+  </body>
+</html>

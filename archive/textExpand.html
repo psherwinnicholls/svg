@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <style>
+    svg{
+      height:100vh;
+      width:100vw;
+    }
+    /* @keyframes dash {
+      from {
+        stroke-dashoffset: 1000;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+} */
+  </style>
+  <body>
+    <svg id='svg'>
+
+    </svg>
+
+    <script type="text/javascript">
+    // create elements
+let svg = document.getElementById("svg");
+let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+let textpath = document.createElementNS(
+  "http://www.w3.org/2000/svg",
+  "textPath"
+);
+let textcontent = document.createTextNode("happy hump day");
+let animation = document.createElementNS(
+  "http://www.w3.org/2000/svg",
+  "animate"
+);
+
+svg.append(path);
+svg.append(text);
+text.append(textpath);
+textpath.append(textcontent);
+text.append(animation);
+
+// set attributes
+path.setAttribute("stroke-width", "0px");
+path.setAttribute("stroke", "red");
+path.setAttribute("fill", "#ffffff00");
+path.setAttribute("stroke-linecap", "round");
+path.setAttribute("id", "path");
+textpath.setAttribute("href", "#path");
+textpath.setAttribute("href", "#path");
+animation.setAttribute("attributeName", "font-size");
+animation.setAttribute("dur", "20s");
+animation.setAttribute("values", "1;2000");
+animation.setAttribute("repeatCount", "indefinite");
+// path.setAttribute("stroke-dasharray", "100");
+// path.setAttribute("stroke", "url(#linear)");
+// path.style.animation = "dash 20s infinite linear";
+
+let count = Math.PI * 6;
+let arr = [];
+let t = 0;
+var a = 250;
+var b = 250;
+var c = 2;
+var d = 6;
+var δ = Math.PI / 6;
+
+// create an array of the count
+for (var i = 0; i <= count; i += 0.001) {
+  arr.push(i);
+}
+
+function animate() {
+  let points = arr.map(i => {
+    let y = a * Math.sin(c * (i * 1) - δ) + window.innerWidth / 2;
+    let x = b * Math.sin(d * (i * 1) - δ) + window.innerHeight / 2;
+
+    return [x, y];
+  });
+
+  // map over the points created in the last function
+  let path =
+    "M" +
+    points
+      .map(p => {
+        // store the x and y coordinates
+        return p[0] + "," + p[1];
+
+        // add a L to the next set of coords
+      })
+      .join(" L");
+
+  // update the paths points
+  var curve = document.getElementById("path");
+  curve.setAttribute("d", path);
+
+  // add 0.5 to t
+  t += 0.3;
+
+  // tell the browser to expect a new animation frame
+  requestAnimationFrame(animate);
+}
+
+// run the animation
+animate();
+</script>
+  </body>
+</html>

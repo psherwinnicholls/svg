@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Made with Thimble</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body >
+    <svg>
+      <circle id="circle" cx="90" cy="50" r="2" stroke="black" stroke-width="0px" fill="yellow" />
+    </svg>
+    <script>
+    // create an empty array
+let xs = [];
+
+// count up to 500
+for (var i = 0; i <= window.innerWidth; i++) {
+  // add 1-500 to the array
+  xs.push(i);
+}
+
+// set time to 0
+let t = 0;
+
+// create a new function
+function animate(e) {
+  // create a new variable, map over the array
+  // x being 1-500
+  let r = xs.map(x => {
+    let ampitude = 180;
+    let freq = 1.0;
+
+    // define y, the proportions of the values in this equation will determine the shape of the curve
+    let baseline = 60;
+
+    var y = baseline + ampitude * Math.tan((x + t) * freq);
+
+    // return coordinates
+    return y;
+  });
+
+  for (var i = 0; i < r.length; i++) {
+    // get the path, set a new d
+    var circle = document.getElementById("circle");
+    circle.setAttribute("r", r[i]);
+  }
+
+  // add 0.5 to t
+  t += 2;
+
+  // tell the browser to expect a new animation frame
+  requestAnimationFrame(animate);
+}
+// start the animation
+animate();
+var circle = document.getElementById("circle");
+circle.setAttribute("cy", window.innerHeight / 2);
+circle.setAttribute("cx", window.innerWidth / 2);
+</script>
+  </body>
+</html>

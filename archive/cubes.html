@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js" charset="utf-8"></script>
+
+<body>
+  <script type="text/javascript">
+  var renerder = null,
+  scene = null,
+  camera = null,
+  cube = null,
+  animating = false;
+
+function init() {
+  var scene = new THREE.Scene();
+
+  var camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    2000
+  );
+  // add light, set color and distance.
+  var light = new THREE.DirectionalLight(0xfdfdfd, 2);
+  // you set the position of the light and it shines into the origin
+  light.position.set(2, 2, 1).normalize();
+  scene.add(light);
+
+  // add ambient light
+  // subtle blue
+  var ambientLight = new THREE.AmbientLight(0x000022);
+  scene.add(ambientLight);
+
+  // added anti alising
+  var renderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  var geometry = new THREE.CubeGeometry(1, 1);
+  var material = new THREE.MeshPhongMaterial({
+    // light
+    specular: 0xd76531,
+    // intermediate
+    color: 0xef8834,
+    // dark
+    emissive: 0x8c2317,
+    shininess: 50,
+    wireframe: false
+    //map: THREE.ImageUtils.loadTexture('http://i.imgur.com/xCE2Br4.jpg?1')
+  });
+  var cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+
+  var cube2 = new THREE.Mesh(geometry, material);
+  scene.add(cube2);
+
+  var cube3 = new THREE.Mesh(geometry, material);
+  scene.add(cube3);
+
+  cube2.position.x = 0;
+  cube3.position.x = 0;
+  camera.position.z = 6;
+
+  function render() {
+    requestAnimationFrame(render);
+    renderer.render(scene, camera);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+
+    cube2.rotation.x -= 0.02;
+    cube2.rotation.y -= 0.02;
+
+    cube3.rotation.x -= 0.01;
+    cube3.rotation.y -= 0.02;
+  }
+  render();
+}
+
+init();
+</script>
+</body>
+
+</html>

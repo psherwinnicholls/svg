@@ -1,0 +1,118 @@
+io<!DOCTYPE html>
+<html>
+<head>
+<title>Mandelbrot</title>
+<style>
+html, body {
+  background-color: #000;width: 100%; height: 100%; margin: 0; padding: 0}
+#leap-overlay { position: fixed; top: 0; left: 0;}
+</style>
+
+</head>
+<body>
+<div>
+<canvas id="JuliaCanvas"></canvas>
+</div>
+
+<script>
+
+var cx = 100, cy = 0, kat1 = 0, kat2 = 4;
+var WJulia = window.innerHeight;
+var HJulia = window.innerHeight;
+var contextJulia;
+var pixJulia;
+var imgdJulia;
+var idJulia;
+var frame = 0;
+const elemJulia = document.getElementById('JuliaCanvas');
+elemJulia.setAttribute("height",window.innerHeight);
+elemJulia.setAttribute("width",window.innerWidth);
+
+function SetupJulia()
+{
+    clearInterval( idJulia );
+
+    if (elemJulia && elemJulia.getContext)
+    {
+        contextJulia = elemJulia.getContext('2d');
+        if (contextJulia)
+        {
+            if (contextJulia.createImageData)
+                imgdJulia = contextJulia.createImageData(WJulia, HJulia);
+            else
+                imgdJulia = contextJulia.getImageData(0, 0, WJulia, HJulia);
+
+            pixJulia = imgdJulia.data;
+        }
+    }
+
+    idJulia = setInterval(LoopJulia, 3);
+}
+
+function LoopJulia()
+{
+
+    kat1 += 0.01;
+    kat2 += 0.01;
+    cx = 1000 * Math.sin(kat1);
+    cy = 1983 * Math.sin(kat2);
+    frame++;
+
+    Julie();
+
+    contextJulia.putImageData(imgdJulia, 0, 0);
+    contextJulia.font = "bold 12px sans-serif";
+    contextJulia.fillStyle = 0;
+    contextJulia.fillText( frame, 20, 20 );
+}
+
+
+function Julie()
+{
+    var px = 0;
+    for (var i = -2000; i < 2000; i = i + 5)
+    {
+        var py = 0;
+        for (var j = -2000; j < 2000; j = j +5)
+        {
+            var c = 0;
+            var x = i;
+            var y = j;
+            var x2 = x * x;
+            var y2 = y * y;
+
+            while (((x2 + y2) < 400000000000) && (c < 31))
+            {
+                c++;
+
+                y  = ((x * y) >> 9) + cy;
+                x  = ((x2 - y2) >> 10) + cx;
+                x2 = x * x;
+                y2 = y * y;
+
+            }
+
+            SetPixelColor( pixJulia, (py * WJulia + px) << 2,
+              255-(8*c), 255-(8*c), 255-(8*c), 0.8 );
+
+            py++;
+        }
+
+        px++;
+    }
+}
+
+function SetPixelColor(pix,offs, a, r, g, b)
+{
+    pix[offs++] = r;
+    pix[offs++] = g;
+    pix[offs++] = b;
+    pix[offs] = a;
+}
+
+  SetupJulia();
+  elemJulia.fillStyle = "black";
+  elemJulia.fillRect(0, 0, canvas.width, canvas.height);
+</script>
+
+<body>

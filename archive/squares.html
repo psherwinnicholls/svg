@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Made with Thimble</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <script>
+let height = 10;
+let width = 10;
+
+var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+document.body.append(svg);
+
+for (var i = 0; i <= 300; i++) {
+  let thissize = height * (i + 1);
+  let targetsize = thissize * 10;
+  let durationOut = 2;
+  let durationIn = 1.4;
+
+  var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect.setAttribute("x", "0");
+  rect.setAttribute("y", "0");
+  rect.setAttribute("width", thissize);
+  rect.setAttribute("height", thissize);
+  svg.append(rect);
+
+  var animateOne = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "animate"
+  );
+  animateOne.setAttribute("attributeName", "height");
+  animateOne.setAttribute("from", thissize);
+  animateOne.setAttribute("to", thissize * 10);
+  animateOne.setAttribute("dur", durationOut);
+  animateOne.setAttribute("fill", "freeze");
+  animateOne.setAttribute("id", "grow");
+  animateOne.setAttribute("begin", "0;shrink.end");
+
+  var animateTwo = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "animate"
+  );
+  animateTwo.setAttribute("attributeName", "width");
+  animateTwo.setAttribute("from", thissize);
+  animateTwo.setAttribute("to", thissize * 10);
+  animateTwo.setAttribute("dur", durationOut);
+  animateTwo.setAttribute("fill", "freeze");
+  animateTwo.setAttribute("begin", "0;shrink.end");
+
+  var animateThree = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "animate"
+  );
+  animateThree.setAttribute("attributeName", "height");
+  animateThree.setAttribute("from", thissize * 10);
+  animateThree.setAttribute("to", thissize);
+  animateThree.setAttribute("dur", durationIn);
+  animateThree.setAttribute("fill", "freeze");
+  animateThree.setAttribute("id", "shrink");
+  animateThree.setAttribute("begin", "grow.end");
+
+  var animateFour = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "animate"
+  );
+  animateFour.setAttribute("attributeName", "width");
+  animateFour.setAttribute("from", thissize * 10);
+  animateFour.setAttribute("to", thissize);
+  animateFour.setAttribute("dur", durationIn);
+  animateFour.setAttribute("fill", "freeze");
+  animateFour.setAttribute("begin", "grow.end");
+
+  rect.append(animateOne);
+  rect.append(animateTwo);
+  rect.append(animateThree);
+  rect.append(animateFour);
+}
+</script>
+  </body>
+</html>

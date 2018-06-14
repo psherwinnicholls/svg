@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Made with Thimble</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body >
+    <svg>
+        <defs></defs>
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <path d="M43.6962373,21.6639671 C35.5284812,22.2769356 27.8372516,24.5079247 14.8221993,29.5946427 C9.42106922,31.705585 3.3313313,29.0383609 1.22038893,23.6372309 C-0.890553441,18.2361008 1.77667067,12.1463629 7.17780073,10.0354205 C22.6954929,3.97058714 32.2742649,1.2692475 43.628875,0.623732172 C57.5080643,-0.165306757 71.8619926,2.80217901 88.8000798,10.1908483 C94.1153694,12.5094642 96.5446535,18.6979673 94.2260377,24.013257 C91.9074218,29.3285466 85.7189186,31.7578307 80.403629,29.4392148 C77.6645928,28.2444027 75.0372052,27.1949982 72.5052212,26.2840085 C72.8282814,27.4723363 73,28.717368 73,30 C73,38.2842712 65.836556,45 57,45 C48.163444,45 41,38.2842712 41,30 C41,26.915258 41.9932325,24.047999 43.6962373,21.6639671 Z" id="eye" fill="#196F3D"></path>
+        </g>
+      <circle></circle>
+      <path id="path" d="M10,10 L50,100 L90,50"></path>
+
+    </svg>
+    <script>
+    // create an empty array
+let xs = [];
+
+// count up to 500
+for (var i = 0; i <= 360; i++) {
+  // add 1-500 to the array
+  xs.push(i);
+}
+
+// set time to 0
+let t = 0;
+
+//      window.onmousemove = animate;
+
+// create a new function
+function animate() {
+  //        e = event || window.event;
+  // create a new variable, map over the array
+  // x being 1-500
+  let points = xs.map(x => {
+    let amplitude = 20;
+    //          let freq = e.clientY / 4;
+
+    // define y, the proportions of the values in this equation will determine the shape of the curve
+    let baseline = 1;
+
+    var y = baseline + amplitude * Math.sin((x + t) / 7);
+
+    // return coordinates
+    return [x, y];
+  });
+
+  // map over the points created in the last function
+  let path =
+    "M" +
+    points
+      .map(p => {
+        // store the x and y coordinates
+        return p[0] + "," + p[1];
+
+        // add a L to the next set of coords
+      })
+      .join(" L");
+
+  // get the path, set a new d
+  var paths = document.getElementById("path");
+
+  paths.setAttribute("d", path);
+
+  // add 0.5 to t
+  t += 0.25;
+
+  // tell the browser to expect a new animation frame
+  requestAnimationFrame(animate);
+}
+
+// start the animation
+animate();
+
+var paths = document.getElementById("path");
+var eye = document.getElementById("eye");
+
+eye.setAttribute(
+  "transform",
+  "translate(" + 50 + "," + window.innerHeight / 7 + ")"
+);
+
+transform = "translate(1000,20)";
+paths.setAttribute(
+  "transform",
+  "translate(" + 100 + "," + window.innerHeight / 2 + ") rotate(30)"
+);
+</script>
+  </body>
+</html>
