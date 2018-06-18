@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style media="screen">
+    body {
+      background: #000;
+    }
+    svg{
+      height:100vh;
+      width:100vw;
+    }
+    path {
+      stroke-width: 3px;
+      stroke: white;
+    }
+  </style>
+</head>
+
+<body>
+  <svg>
+    <path id="path" d="M10,10 L50,100 L90,50"></path>
+  </svg>
+  <script type="text/javascript">
+    var arr = [];
+    var x = 0;
+    var y = 0;
+    var length = 100;
+    let t = 0;
+
+    var arr = getX(length)
+
+    function getX(n) {
+      for (a = [x = i = 0]; ++i < n;) a[i] = x += x > i & a.indexOf(x - i) < 0 ? -i : i;
+      return a;
+    }
+
+    function animate() {
+
+
+      let points = arr.map(x => {
+        x = isFinite(x) ? x-t * window.innerWidth : 0;
+        y = (100*Math.sin(x+t)) || 0
+        console.log(x)
+        return [x, y];
+      });
+
+
+
+
+      let path =
+        "M" +
+        points
+        .map(p => {
+          return p[0] + "," + p[1];
+        })
+        .join(" L");
+
+      var paths = document.getElementById("path");
+
+      paths.setAttribute("d", path);
+      t += 0.0002;
+
+      requestAnimationFrame(animate);
+    }
+
+
+    var paths = document.getElementById("path");
+    paths.setAttribute(
+      "transform",
+      "translate("+window.innerWidth/2+"," + (window.innerHeight / 2) + ")")
+    animate();
+  </script>
+</body>
+
+</html>
