@@ -41,8 +41,9 @@
 
 
       let points = arr.map(x => {
+        y = Math.sin(x)*80
         x = isFinite(x) ? x-t * window.innerWidth : 0;
-        y = (100*Math.sin(x+t)) || 0
+        // y = (100*Math.sin(x+t)) || 0
         console.log(x)
         return [x, y];
       });
@@ -61,9 +62,9 @@
       var paths = document.getElementById("path");
 
       paths.setAttribute("d", path);
-      t += 0.0002;
+      // t += 0.0002;
 
-      requestAnimationFrame(animate);
+      // requestAnimationFrame(animate);
     }
 
 

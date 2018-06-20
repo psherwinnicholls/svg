@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>three.js webgl - lines - fat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    #info {
+      position: absolute;
+      color: #ffffff;
+      top: 0px;
+      width: 100%;
+      padding: 5px;
+      font-family: Monospace;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    a {
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js" charset="utf-8"></script>
+  <script>
+    var renderer, scene, camera;
+    var line;
+    var MAX_POINTS = 5000;
+    var drawCount;
+    var colors = [21, 244, 1];
+
+    init();
+    animate();
+
+    function init() {
+
+      // renderer
+      renderer = new THREE.WebGLRenderer();
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // scene
+      scene = new THREE.Scene();
+
+      // camera
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+      camera.position.set(0, 0, 1000);
+
+      // geometry
+      var geometry = new THREE.BufferGeometry();
+
+      // attributes
+      var positions = new Float32Array(MAX_POINTS * 3); // 3 vertices per point
+      geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      // drawcalls
+      drawCount = 2; // draw the first 2 points, only
+      geometry.setDrawRange(0, drawCount);
+      geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      // material
+      var material = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        linewidth: 400
+      });
+
+      // line
+      line = new THREE.Line(geometry, material);
+      scene.add(line);
+
+      // update positions
+      updatePositions();
+
+    }
+
+    // update positions
+    function updatePositions() {
+
+      var positions = line.geometry.attributes.position.array;
+
+      var x = y = z = index = 0;
+
+      for (var i = 0, l = MAX_POINTS; i < l; i++) {
+
+        positions[index++] = x;
+        positions[index++] = y;
+        positions[index++] = z;
+
+        // x += ( 20 * Math.cos(i*drawCount)) * 10;
+        // y += ( 10 * Math.sin(i*drawCount)) * 10;
+        // z += ( 500 * Math.sin(i+drawCount)) * 10;
+        x = (Math.sin(i * 100) - 0.5) * (i * 0.5)
+        y = (Math.sin(i * 100) - 0.5) * (i * 0.5)
+        z = (Math.random(0.5) * (i  * 0.5));
+
+        // colors
+        colors.push(255 * (x / i));
+        colors.push(255 * (y / i));
+        colors.push(255 * (z / i));
+      }
+
+    }
+
+
+    // render
+    function render() {
+
+      renderer.render(scene, camera);
+
+    }
+
+    // animate
+    function animate() {
+      var time = Date.now() * 0.001;
+
+      requestAnimationFrame(animate);
+      // line.rotation.x = time * 0.25;
+      line.rotation.y = time * 0.5;
+      console.log(line)
+      drawCount = (drawCount + 1) % MAX_POINTS;
+
+      line.geometry.setDrawRange(0, drawCount);
+
+      if (drawCount === 0) {
+
+        // periodically, generate new data
+
+        updatePositions();
+
+        line.geometry.attributes.position.needsUpdate = true; // required after the first render
+        line.geometry.attributes.material.needsUpdate = true; // required after the first render
+
+
+        // line.material.color.setHSL( Math.random(), 1, 0.5 );
+
+      }
+
+      render();
+
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+    var canvas = document.getElementById('canvas');
+    var height = window.innerHeight;
+    var width = window.innerWidth;
+    canvas.setAttribute('height', height);
+    canvas.setAttribute('width', width);
+
+    var ctx = canvas.getContext("2d");
+
+    const lengthMultiplier = 10;
+    const angleMultiplier = 15;
+    const limit = 10;
+    var t = 0;
+
+    let fractal = function(originx, originy, length, direction, limit) {
+      if (limit <= 0) return;
+      let [endX, endY] = calculateEnd(originx, originy, length, direction);
+      drawLine(ctx, originx, originy, endX, endY);
+      setTimeout(function() {
+        fractal(
+          endX,
+          endY,
+          length * lengthMultiplier,
+          direction +(angleMultiplier),
+          limit - 1
+        );
+        // fractal(
+        //   endX,
+        //   endY,
+        //   length * lengthMultiplier,
+        //   direction - angleMultiplier,
+        //   limit - 1
+        // );
+      }, 200);
+    };
+
+    function calculateEnd(originx, originy, length, direction) {
+      angle = (100*Math.sin(originx)); // if you're using degrees instead of radians
+      return [
+        length * Math.cos(angle) + originx,
+        length * Math.sin(angle) + originy
+      ];
+    }
+
+
+    function drawLine(ctx, x1, y1, x2, y2) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.quadraticCurveTo(100*Math.sin(Math.cos(x2) < 0.5?  -x2 :  x2),100*Math.sin(Math.cos() < 0.5?  -y2 :  y2),x2 *(t/x1),(y2/t)*(y2*t));
+      ctx.lineWidth=10*Math.sin(0);
+
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+
+    function animate(){
+      fractal(0, height/2, 100, 0, limit);
+      requestAnimationFrame(animate);
+      t+= Math.tan(Math.random())
+    }
+    animate()
+  </script>
+</body>
+
+</html>

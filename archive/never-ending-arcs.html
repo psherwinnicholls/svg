@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+
+    // set up the canvas
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext('2d');
+
+    let width = window.innerWidth
+    let height = window.innerHeight
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const lengthMultiplier = 1;
+    const angleMultiplier = 3;
+    const direction = 0
+    const limit = 15;
+    let length = 12;
+    let t = 0;
+
+    let fractal = function(originx, originy, length, direction, limit) {
+      if (limit <= 0) return;
+      let [endX, endY] = calculateEnd(originx, originy, length, direction);
+      drawLine(ctx, originx, originy, endX, endY);
+      setTimeout(function() {
+        fractal(
+          endX,
+          endY,
+          length * lengthMultiplier,
+          direction + angleMultiplier,
+          limit - 1
+        );
+        fractal(
+          endX,
+          endY,
+          length * lengthMultiplier,
+          direction - angleMultiplier,
+          limit - 1
+        );
+      }, 2000);
+    };
+
+    function calculateEnd(originx, originy, length, direction) {
+      angle = (direction * Math.PI) / 180; // if you're using degrees instead of radians
+      return [
+        length * Math.cos(angle) + originx,
+        length * Math.sin(angle) + originy
+      ];
+    }
+
+    function animate(){
+      fractal(width/2, height / 2, length, direction, limit);
+      t ++
+      window.requestAnimationFrame(animate)
+    }
+
+    function drawLine(ctx, x1, y1, x2, y2) {
+
+      ctx.beginPath();
+      ctx.strokeStyle="rgba("+255/Math.sin(t)+","+255/Math.cos(t*Math.random())+","+255/Math.tan(t)+","+ 0.1+")";
+      ctx.arc(t ,t,t,t^t,t*Math.PI)
+      ctx.lineTo(x2,y2);
+      ctx.stroke();
+
+    }
+
+    animate();
+  </script>
+</body>
+
+</html>
