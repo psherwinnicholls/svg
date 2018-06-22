@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas" ></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.min.js"></script>
+    <script type="text/javascript">
+
+      function setup(){
+        let height = window.innerHeight;
+        let width = window.innerWidth;
+        createCanvas(width,height, WEBGL)
+      }
+
+      function draw(){
+        for (var i = 0; i<100; i++){
+          rotateX(frameCount * 0.01);
+          rotateZ(frameCount * 0.01);
+          translate(100*i, 10+i);
+          box(10);
+        }
+      }
+    </script>
+  </body>
+</html>

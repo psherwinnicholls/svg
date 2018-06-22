@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.js" charset="utf-8"></script>
+
+<body>
+  <div id="container"></div>
+
+  <script type="text/javascript">
+    var t = 0;
+
+    var scene, renderer, camera;
+    init()
+
+    function init() {
+      let height = window.innerHeight;
+      let width = window.innerWidth;
+
+      const VIEW_ANGLE = 45;
+      const ASPECT = width / height;
+      const NEAR = 0.1
+      const FAR = 100000
+
+      const container =
+        document.querySelector('#container');
+
+      renderer = new THREE.WebGLRenderer();
+      camera = new THREE.PerspectiveCamera(
+        VIEW_ANGLE,
+        ASPECT,
+        NEAR,
+        FAR,
+      )
+      scene = new THREE.Scene();
+
+      scene.add(camera);
+
+
+      container.appendChild(renderer.domElement);
+
+      const pointLight =
+        new THREE.PointLight(0xFFFFFF)
+
+      pointLight.position.x = 10
+      pointLight.position.y = 50
+      pointLight.position.z = 130
+
+      scene.add(pointLight);
+      renderer.setSize(width, height);
+      window.addEventListener('resize', onWindowResize, false);
+
+    }
+
+    function getFont() {
+      var loader = new THREE.FontLoader();
+      var font = loader.load(
+        // resource URL
+        'fonts/Work_Sans_Medium_Regular.json',
+        function(font) {
+          var xMid, text;
+          var textShape = new THREE.BufferGeometry();
+          var color = new THREE.Color("hsl("+300/Math.cos(t/100)+", "+66+"%, 50%)");
+          var matDark = new THREE.LineBasicMaterial({
+            color: color,
+linewidth: 1,          });
+          var matLite = new THREE.MeshBasicMaterial({
+            color: color,
+linewidth: 1,          });
+          var message = "words";
+          var shapes = font.generateShapes(message, 100, 2);
+          var geometry = new THREE.ShapeGeometry(shapes);
+          geometry.computeBoundingBox();
+          xMid = -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+          geometry.translate(xMid, 0, 0);
+          // make shape ( N.B. edge view not visible )
+          textShape.fromGeometry(geometry);
+          text = new THREE.Mesh(textShape, matLite);
+          // text.rotation.x = Math.random(t*0.1000)*100;
+          // text.rotation.y = Math.random(t*0.1000)*100;
+          // text.rotation.z = Math.random(t*0.1000)*100;
+          text.scale.x = Math.sin(t*0.100)*70;
+          text.scale.y = Math.sin(t*0.100)*70;
+          // text.position.x = (t*10)-1000;
+          text.position.y = Math.cos(t*0.1000)*100;
+          text.position.z = -30000;
+          console.log(text)
+          scene.add(text);
+          t++
+        });
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+    const render = (t) => {
+      requestAnimationFrame(render);
+      t-= 0.0006
+      getFont(t);
+
+      renderer.render(scene, camera);
+    }
+    render();
+  </script>
+</body>
