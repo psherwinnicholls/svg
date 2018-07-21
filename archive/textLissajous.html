@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.6.0/two.js" charset="utf-8"></script>
+    <script>
+    var two = new Two({
+    	fullscreen: true
+    }).appendTo(document.body);
+
+    var length = 64;
+    var width = 250;
+    var height = 50;
+
+    let count = Math.PI * 6;
+    let t = 0;
+    var a = 250;
+    var b = 250;
+    var c = 17;
+    var d = 10;
+    var δ = Math.PI / 2;
+
+    var points = [];
+
+    for (var i = 0; i < count; i += 0.1) {
+    	var pct = i / (length - 1);
+      y = 200 + a * Math.sin(c * (i * i) - δ)
+      x = 200 + b * Math.cos(d * (i / i) + δ)
+
+      points.push(new Two.Anchor(x, y));
+    }
+
+    var wave = two.makeCurve(points, true);
+    wave.translation.set(two.width / 2, two.height / 4);
+    wave.noFill();
+    wave.stroke = 'rgb(255, 255, 255)';
+    wave.linewidth = 0.5;
+    wave.cap = 'round';
+
+    var text = two.makeText('The quick brown fox jumped over the lazy dog', 0, 0, {
+      alignment: 'left',
+      size: '100'
+    });
+
+    two.update();	// Generate the SVG elements
+
+    text._renderer.elem.innerHTML = [
+    	'<textPath xlink:href="#', wave.id, '">', text.value, '</textPath>'
+    ].join('');
+
+    two.bind('update', function(frameCount) {
+    	var vertices = wave.vertices;
+      for (var i = 0; i < vertices.length; i++) {
+        var offset = frameCount / 20;
+      	var v = vertices[i];
+        var pct = i / (vertices.length - 1);
+        y = 200 + a * Math.sin(c * (i + frameCount/10000) / δ)
+        x = 200 + b * Math.cos(d * (i / frameCount/10000) / δ)
+        v.y = y;
+      }
+    });
+    two.play();
+
+
+          </script>
+
+  </body>
+</html>

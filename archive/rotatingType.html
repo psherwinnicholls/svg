@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.9.0/opentype.min.js"></script>
+  <script src="https://unpkg.com/earcut@2.1.1/dist/earcut.dev.js"></script>
+
+  <script>
+    var canvas = document.getElementById('canvas')
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    var ctx = canvas.getContext('2d');
+    var t = 0
+
+    function setup() {
+      getFont()
+    }
+
+    function getFont(t) {
+      opentype.load('fonts/WorkSans-Bold.ttf', (err, font) => {
+
+
+        ctx.clearRect(0,0,canvas.width,canvas.height)
+        let path = font.getPath('words', window.innerWidth/4, window.innerHeight/2, 72)
+        console.log(path)
+        path.fill = "rgba(255,255,255,1)"
+        path.stroke = "black"
+        console.log()
+        path.commands.map((arr, i) => {
+          if(arr.type == "Q"){
+            arr.x1 = arr.x1 + (Math.sin(t) *100)
+            arr.x = arr.x + (Math.sin(t) *100)
+            arr.y1 = arr.y1 + (Math.cos(t) *100)
+            arr.y = arr.y + (Math.cos(t) *100)
+          }
+          if(arr.type == "M"){
+            arr.x1 = arr.x1 + (Math.sin(t) *100)
+            arr.x = arr.x + (Math.sin(t) *100)
+            arr.y1 = arr.y1 + (Math.cos(t) *100)
+            arr.y = arr.y + (Math.cos(t) *100)
+          }
+          if(arr.type == "L"){
+            arr.x1 = arr.x1 + (Math.sin(t) *100)
+            arr.x = arr.x + (Math.sin(t) *100)
+            arr.y1 = arr.y1 + (Math.cos(t) *100)
+            arr.y = arr.y + (Math.cos(t) *100)
+          }
+          // arr.x = arr.x
+
+        })
+        // ctx.transform(1,1,0,1,0,0);
+
+        path.draw(ctx);
+
+
+
+      })
+    }
+    setup()
+
+    const render = (t) => {
+      requestAnimationFrame(render);
+      t += 1
+      getFont(t);
+    }
+
+    render();
+  </script>
+</body>
+
+</html>
