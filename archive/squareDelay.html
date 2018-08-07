@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body style="background:black">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.6.0/two.js" charset="utf-8"></script>
+  <script>
+    var two = new Two({
+      fullscreen: true
+    }).appendTo(document.body);
+    var radius = Math.max(two.width, two.height);
+
+    var a = 255
+    var b = 255
+    var c = 255
+    var d = 255
+    var e = 255
+    var f = 255
+
+    var styles = {
+      family: 'sans-serif',
+      size: 50,
+      leading: 50,
+      weight: 900
+    };
+
+    var linearGradient = two.makeLinearGradient(
+      two.width / 2, -two.height / 2, // radius,
+      two.width / 2, two.height / 2, // radius,
+      new Two.Stop(0, 'rgba(255, 255, 0, 1)'),
+      new Two.Stop(1, 'rgba(0, 255, 255, 0.5)'),
+    );
+    let vignette = []
+    for (var i = 0; i < two.width / 10; i++){
+       vignette[i] = two.makeRectangle(((two.width / 10) * i) , two.height /2, 100, 100);
+       vignette[i].noStroke();
+       // vignette.rotation = i;
+       vignette[i].fill = linearGradient;
+
+       // vignette.scale = i *100
+    }
+
+
+    // Bind a function to scale and rotate the group
+    // to the animation loop.
+    var t = 0;
+
+    two.bind('update', function(frameCount) {
+      // This code is called everytime two.update() is called.
+      // Effectively 60 times per second.
+
+      for (var i = 0; i <  10; i++){
+         vignette[i].rotation =  Math.cos((frameCount/1000) )
+         vignette[i].scale =  13 + Math.sin((frameCount/100) ) -10
+         vignette[i].translation.y = (two.height/2) + (i ^ t / Math.cos((frameCount/1000) )) * Math.sin((frameCount/1000) )
+
+         // vignette.scale = i *100
+      }      // vignette.scale = 0.3
+      // vignette.rotation = t * 0.00100;
+
+
+      // vignette.fill = two.makeLinearGradient(
+      //   0, two.height * Math.sin(a / 100), // radius,
+      //   two.width * Math.sin(a / 100), 0, // radius,
+      //   new Two.Stop(0, 'rgba(' + 255 * Math.sin(a / 100) + ', ' + a + ', ' + a + ', 1)'),
+      //   new Two.Stop(1, 'rgba(' + 255 * Math.sin(c / 100) + ', ' + c + ', ' + 255 * Math.cos(c / 100) + ',1)'),
+      // );
+      t++
+
+    }).play(); // Finally, start the animation loop
+  </script>
+
+</body>
+
+</html>

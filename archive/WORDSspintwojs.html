@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body style="background:black">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.6.0/two.js" charset="utf-8"></script>
+  <script>
+    var two = new Two({
+      fullscreen: true
+    }).appendTo(document.body);
+    var radius = Math.max(two.width, two.height);
+
+    var a = 255
+    var b = 255
+    var c = 255
+    var d = 255
+    var e = 255
+    var f = 255
+
+    var styles = {
+      family: 'sans-serif',
+      size: 18,
+      leading: 0,
+      weight: 900,
+      linewidth: '100px'
+    };
+
+    var linearGradient = two.makeLinearGradient(
+      two.width / 2, -two.height / 2, // radius,
+      two.width / 2, two.height / 2, // radius,
+      new Two.Stop(0, 'rgba(' + a + ', 0, 0, 1)'),
+      new Two.Stop(1, 'rgba(255, 255, 0, 1)'),
+    );
+
+
+    var words = two.makeText('words', two.width / 2, two.height / 2, styles);
+    words.fill = linearGradient;
+    // Bind a function to scale and rotate the group
+    // to the animation loop.
+    var t = 0;
+
+    two.bind('update', function(frameCount) {
+      words.translation.y = (two.height / 2 )+ (30 + Math.sin(frameCount/Math.PI) ^ 600)
+      words.translation.x = (two.height / 2 )+ (30 + Math.cos(frameCount/Math.PI) / 600)
+      words.rotation = (two.height / 2 )+ (30 + Math.cos(t) * 600)
+      words.scale =  (30 + Math.cos(frameCount*Math.PI) *Math.PI)
+      t-= 100
+    }).play(); // Finally, start the animation loop
+  </script>
+
+</body>
+
+</html>
