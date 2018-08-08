@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <style media="screen">
+      @font-face {
+      font-family: "Avenir Next Variable";
+      src: url("fonts/AvenirNext_Variable.ttf") format("truetype");
+
+      }
+      body{
+        font-family: "Avenir Next Variable";
+        color: rgb(0, 0, 0);
+        font-size: 148px;
+        text-align: center;
+        background: #FCB239;
+      }
+      #container{
+        display: flex;
+        height:100vh;
+        justify-content: center;
+        align-items: center;
+      }
+      .letter{
+        width:auto;
+        color:rgba(0,0,0,0);
+      }
+    </style>
+    <div id="container"></div>
+    <script type="text/javascript">
+      var div;
+      var container = document.getElementById('container');
+
+      var wght = 631.164;
+      var wdth = 88.6799;
+      var t = 0;
+
+      var string = "melting"
+      var characters = string.split('');
+
+      for (var i=0; i < characters.length; i++){
+        div = document.createElement("div")
+        div.className = "letter";
+        div.innerHTML = characters[i]
+        container.append(div)
+      }
+
+      // Should use container.children (or whatever it actually is)
+      var letters = Array.from(container.getElementsByClassName('letter'))
+
+      var animatedLetters = []
+
+      letters.forEach((letter, i) => {
+        setTimeout(() => {
+          animatedLetters.push(letter)
+        }, i*750);
+      })
+
+      function animate(){
+
+        animatedLetters.map((letter, i) => {
+          wdth = ((12.5 + 12.5 * Math.cos(t/100*(i+1))) + 75);
+          // wght = ((250 + 250 * Math.cos(t/1000*(i+1))) + 400);
+          var shadow = 20 + 20 * Math.sin((t/100) * (i+1)) + 10
+          // var shadow = 20
+          // console.log(opacity)
+          letter.style.textShadow = '0 ' + shadow+ 'px ' + shadow * 1.8 + 'px rgba(215,64,97,0.7)'
+          letter.style.fontVariationSettings = "'wdth' " + wdth +",'wght' " + wght
+        })
+
+        t++
+        requestAnimationFrame(animate);
+      }
+      
+      // idea
+      // layer up letters and have them animate.
+
+      animate()
+    </script>
+  </body>
+</html>
